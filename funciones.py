@@ -6,6 +6,7 @@ from scipy.fft import fftfreq, fft
 from scipy.io import wavfile
 from pydub import AudioSegment
 from scipy.signal import windows
+
 #Banda de Subgraves (20 Hz - 200 Hz)
 #Banda de Graves (200 Hz - 1 kHz)
 #Banda de Medios (1 kHz - 5 kHz)
@@ -50,30 +51,22 @@ def ecualizar(señal, sample_rate,lista_tuplas_freq, list_gain):
 
     # Regresar al dominio del tiempo con las frecuencias ya modificadas
     señal_ecualizada = np.fft.ifft(señal_fft)
-    print("Diferencia máxima entre señal original y ecualizada:", np.max(np.abs(señal - señal_ecualizada.real)))
-    #imprimir_numeros_complejos(señal_ecualizada)
     # Devolvemos la señal sin modificar y la señal modificada y las frecuencias que vamos a utilizar para modificar 
     return np.abs(señalCopy),np.abs(señal_fft), señal_ecualizada.real, freq_bins
 
 
 
-def graficar(señal_fft,frecuencias):
+def graficar(señal_fft,frecuencias,title):
     plt.figure(figsize=(10, 6))
-    #plt.subplot(2, 1, 1)
-    plt.title('Señal original')
-    #plt.plot(frecuencias, señalCopy)
-    #plt.subplot(2, 1, 2)
-    #plt.title('Señal despues de la ganancia')
-    # Creamos una mascara para eliminar los ceros cuando cortamos esas frecuencias
+    plt.title(title)
     mask = np.ma.masked_where(señal_fft == 0, señal_fft)
     frecuencias = np.abs(frecuencias)
     mask = np.abs(mask)
-
     frecuencias_espejadas = np.concatenate([-frecuencias[::-1], frecuencias])
     mask_espejado = np.concatenate([mask[::-1], mask])
-    
     plt.plot(frecuencias_espejadas, mask_espejado)
-    plt.show()
+    plt.savefig("Graficas/" + title +".png")
+    #plt.show()
 
 
 def mp3aWav(ruta_mp3):

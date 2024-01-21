@@ -11,7 +11,7 @@ from scipy.io.wavfile import write
 ############################## Principal ##########################
 
 def main(gan1,gan2,gan3,gan4):
-    print("Ecualizador")
+    print("Ecualizadando")
     # Converitmos de mp3 a Wav
     rutaWav = mp3aWav('Audios/Entradas/just-relax-11157.mp3')
     # cpnvertimos el audio de dos canales a uno si es que es de dos
@@ -25,8 +25,8 @@ def main(gan1,gan2,gan3,gan4):
     gan2 = 10**(gan2/10)
     gan3 = 10**(gan3/10)
     gan4 = 10**(gan4/10)
-    #list_gain = [gan1,gan2,gan3,gan4]
-    list_gain = [1,1,1,1]
+    list_gain = [gan1,gan2,gan3,gan4]
+    #list_gain = [1,1,1,1]
     # ecualizamos y devolvemos la señal original, la señal modificada, el audio ecualizado y las frequecuencias 
     señalCopy, señal_fft, audio_ecualizado, freq_bins = ecualizar(stereo_audio, sample_rate, lista_tuplas_freq, list_gain)
     audio_ecualizado =  audio_ecualizado.astype(np.int16)
@@ -39,8 +39,8 @@ def main(gan1,gan2,gan3,gan4):
     guardarMp3(rutaWav)
 
     # Graficamos
-    graficar(señal_fft,freq_bins)
-    graficar(señalCopy,freq_bins)
+    graficar(señal_fft,freq_bins, "Audio modificado")
+    graficar(señalCopy,freq_bins, "Audio original")
 
 ######
 
