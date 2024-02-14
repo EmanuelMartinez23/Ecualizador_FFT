@@ -13,7 +13,7 @@ from scipy.io.wavfile import write
 def main(gan1,gan2,gan3,gan4):
     print("Ecualizadando")
     # Converitmos de mp3 a Wav
-    rutaWav = mp3aWav('Audios/Entradas/just-relax-11157.mp3')
+    rutaWav = mp3aWav('Audios/Entradas/The Killers - Somebody Told Me (Official Music Video).mp3')
     # cpnvertimos el audio de dos canales a uno si es que es de dos
     audio_mono = convertir_a_mono(rutaWav)
     # leemos el audio mono para sacar sus datos
@@ -26,6 +26,7 @@ def main(gan1,gan2,gan3,gan4):
     gan3 = 10**(gan3/10)
     gan4 = 10**(gan4/10)
     list_gain = [gan1,gan2,gan3,gan4]
+    print(list_gain)
     #list_gain = [1,1,1,1]
     # ecualizamos y devolvemos la señal original, la señal modificada, el audio ecualizado y las frequecuencias 
     señalCopy, señal_fft, audio_ecualizado, freq_bins = ecualizar(stereo_audio, sample_rate, lista_tuplas_freq, list_gain)
@@ -39,9 +40,10 @@ def main(gan1,gan2,gan3,gan4):
     guardarMp3(rutaWav)
 
     # Graficamos
-    graficar(señal_fft,freq_bins, "Audio modificado")
-    graficar(señalCopy,freq_bins, "Audio original")
+    graficar(señalCopy,señal_fft,freq_bins, "Espectro")
+    #graficar(señalCopy,freq_bins, "Audio original")
+    # Para the silence al reves 
+    #graficar(señal_fft,señalCopy,freq_bins, "Espectro")
 
 ######
-
-main(1,0,1,1)
+main(-6,-8,-1,-4)

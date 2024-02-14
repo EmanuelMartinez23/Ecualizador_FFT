@@ -56,17 +56,33 @@ def ecualizar(señal, sample_rate,lista_tuplas_freq, list_gain):
 
 
 
-def graficar(señal_fft,frecuencias,title):
-    plt.figure(figsize=(10, 6))
+def graficar(señal_fft,señal_modificada,frecuencias,title):
+    plt.figure()
     plt.title(title)
+    # Para la señal original
     mask = np.ma.masked_where(señal_fft == 0, señal_fft)
     frecuencias = np.abs(frecuencias)
     mask = np.abs(mask)
     frecuencias_espejadas = np.concatenate([-frecuencias[::-1], frecuencias])
     mask_espejado = np.concatenate([mask[::-1], mask])
-    plt.plot(frecuencias_espejadas, mask_espejado)
+    plt.plot(frecuencias_espejadas, mask_espejado,label='Espectro original', color='blue' )
+
+    # para la grafica 2 de la señal original
+    mask2 = np.ma.masked_where(señal_modificada == 0, señal_modificada)
+    frecuencias2 = np.abs(frecuencias)
+    mask2 = np.abs(mask2)
+    frecuencias_espejadas2 = np.concatenate([-frecuencias2[::-1], frecuencias2])
+    mask_espejado2 = np.concatenate([mask2[::-1], mask2])
+
+    plt.plot(frecuencias_espejadas2, mask_espejado2, label='Espectro modificado', color='red')
+    plt.autoscale(enable=True, axis='y', tight=True)
+    plt.xlim([-6000, 6000])
+    #plt.ylim([0, 1.2])
+    plt.xlabel("Frecuencia [Hz]")
+    plt.ylabel("Amplitud")
     plt.savefig("Graficas/" + title +".png")
-    #plt.show()
+    plt.legend()
+    plt.show()
 
 
 def mp3aWav(ruta_mp3):
